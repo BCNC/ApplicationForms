@@ -1,0 +1,135 @@
+<!DOCTYPE html>
+<html >
+<head>
+    <meta charset="UTF-8">
+    <title>Sign-Up/Login Form</title>
+    <link href='http://fonts.googleapis.com/css?family=Titillium+Web:400,300,600' rel='stylesheet' type='text/css'>
+    
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/normalize.css') }}">
+    
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/dropdown.css') }}">
+
+    
+    
+    
+</head>
+
+<body>
+    <div class="form">
+
+            <div class="tab-content">
+            <div id="signup">   
+                <h1>BCNC Fall Applications</h1>
+
+                <form id="upload-form" action="{{ url_for('upload') }}" method="POST" enctype="multipart/form-data">
+
+                  <div class="top-row">
+                      <div class="field-wrap">
+                          <label>
+                              First Name<span class="req">*</span>
+                          </label>
+                          <input type="name" name="inputFName" id="inputFName" class="form-control" required autocomplete="off" />
+                      </div>
+
+                      <div class="field-wrap">
+                          <label>
+                              Last Name<span class="req">*</span>
+                          </label>
+                          <input type="name" name="inputLName" id="inputLName" class="form-control" required autocomplete="off" />
+                      </div>
+                  </div>
+
+                  <div class="field-wrap">
+                      <label>
+                          Email Address<span class="req">*</span>
+                      </label>
+                      <input type="email" name="inputEmail" id="inputEmail" class="form-control" required autocomplete="off"/>
+                  </div>
+
+                  <div class = "top-row">
+                    <div class="field-wrap">
+                      <label>
+                          Primary Major<span class="req">*</span>
+                      </label>
+                      <input type="major" name="inputPMajor" id="inputPMajor" class="form-control" required autocomplete="off"/>
+                    </div>
+                    <div class="field-wrap">
+                      <label>
+                          Secondary Major
+                      </label>
+                      <input type="major" name="inputSMajor" id="inputSMajor" class="form-control" required autocomplete="off"/>
+                    </div>
+                  </div>
+
+                  <div class = "top-row">
+                    <div class="field-wrap">
+                      <label>
+                          GPA<span class="req">*</span>
+                      </label>
+                      <input type="gpa" name="inputGPA" id="inputGPA" class="form-control" required autocomplete="off"/>
+                    </div>
+                    <div class="field-wrap">
+                      <label>
+                          Graduation Year<span class="req">*</span>
+                      </label>
+                      <input type="gradYear" name="inputGradYear" id="inputGradYear" class="form-control" required autocomplete="off"/>
+                    </div>
+                  </div>
+
+                  <div class="field-wrap">
+                    <h1 class="descriptionHeader">Why do you want to be a part of the BCNC and what do you believe you can contribute? <span style="color: #1ab188;">*</span></h1>
+                    <textarea name="fquestion" rows="3" cols="70"></textarea>
+                  </div>
+
+                  <div class="field-wrap">
+                    <h1 class="descriptionHeader">What might your résumé not tell us about you? What do you do for fun? <span style="color: #1ab188;">*</span></h1>
+                    <textarea name="squestion" rows="3" cols="70"></textarea>
+                  </div>
+
+                  <h1 class="descriptionHeader">What positions appear most interesting to you? <span style="color: #1ab188;">*</span></h1>
+                  <select name="position">
+                    <option value="placeholder"></option>
+                    <option value="df">Director of Finance</option>
+                    <option value="dpr">Director of Public Relations</option>
+                    <option value="do">Director of Outreach</option>
+                  </select>
+
+                  <div class="field-wrap">
+                      <p class="dropboxtext">Resume, Cover Letter, Relevant Files:<br>
+                      Select files OR drag them into the box below.</p>
+                      <input id="file-picker" type="file" name="file" accept="*" multiple>
+                      <div id="dropbox">
+                          <p class="dropboxtext">Drag and Drop Files Here</p>
+                      </div><p></p>
+
+                      <fieldset id="progress" style="display: none">
+                          <legend class="dropboxtext">Files Progress</legend>
+
+                          <div class="progress-trough">
+                              <div id="progress-bar" class="progress-bar">0%</div>
+                          </div>
+                      </fieldset><p></p>
+                  </div>
+
+                  <button id="upload-button" type="submit" class="button button-block"/>Submit</button>
+
+                  <div id="loader">
+                    <div id="loader_1" class="loader"></div>
+                    <div id="loader_2" class="loader"></div>
+                    <div id="loader_3" class="loader"></div>
+                    <div id="loader_4" class="loader"></div>
+                    <div id="loader_5" class="loader"></div>
+                    <div id="loader_6" class="loader"></div>
+                    <div id="loader_7" class="loader"></div>
+                    <div id="loader_8" class="loader"></div>
+                  </div>
+                </form>
+                </div>
+            </div>
+      </div><!-- tab-content -->
+  </div> <!-- /form -->
+  <script type="text/javascript" src="{{ url_for('static', filename='js/jquery-2.1.1.min.js') }}"></script>
+  <script type="text/javascript" src="{{ url_for('static', filename='js/uploadr.js') }}"></script>
+</body>
+</html>
