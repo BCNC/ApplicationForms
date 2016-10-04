@@ -251,18 +251,22 @@ function doUpload() {
             $progressBar.css({"width": "100%"});
             data = JSON.parse(data);
             if (data.status === "error") {
+                console.log("Hello");
                 window.alert(data.msg);
                 $("#upload-form :input").removeAttr("disabled");
                 $('#loader').hide();
                 return;
             }
             else {
-
+                console.log("David");
                 window.alert(data.msg);
                 $('#loader').hide();
                 return
             }
         },
+        error: function(e) {
+            console.log(e);
+        }
     });
 }
 

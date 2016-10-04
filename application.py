@@ -15,8 +15,7 @@ tableDB = ddb.Table(tablenameDB)
 ########################################################
 ##############S3########################################
 s3region = 'us-west-2'
-s3bucket = 'bcncapplications'
-s3bucketDB = 'bcncresumes'
+s3bucket = 'bcncresumes'
 s3 = boto3.resource('s3', region_name=s3region)
 ########################################################
 
@@ -46,22 +45,20 @@ def upload():
 
         # Validate the input
         validation = validateInput(_email, _gpa, _year)
-        print queryDDB(_name)
         if validateInput(_email, _gpa, _year) != "OK":
             return ajax_response(False, validation)
         elif len(request.files.getlist("file")) == 0:
             return ajax_response(False, "Please upload a file.")
         elif not (queryDDB(_name).get('Item') is None):
             return ajax_response(False, "An entry with this name: " + _name + " already exists. If this is a mistake shoot an email to contactbcnc@gmail.com")
-
         # Add entry to DDB
         response = table.put_item(Item=fillItem(_uploadKey, _name, _email, _primary, _secondary, _gpa, _year, _q1, _q2, _position))
-        responseDB = table.put_item(Item=fillItemDB(_uploadKey, _name, _email, _primary, _secondary, _gpa, _year))
+        responseDB = tableDB.put_item(Item=fillItemDB(_uploadKey, _name, _email, _primary, _secondary, _gpa, _year))
 
         # Add files to S3
         for upload in request.files.getlist("file"):
             s3.Bucket(s3bucket).put_object(Key=_name + '/' + upload.filename.rsplit("/")[0], Body=upload)
-            s3.Bucket(s3bucketDB).put_object(Key=_name + '/' + upload.filename.rsplit("/")[0], Body=upload)
+
     except Exception as e:
         return ajax_response(False, str(e))
     return ajax_response(True, "Your information has successfully been recorded.")
@@ -108,7 +105,11 @@ def ajax_response(status, msg):
 ))
 
 def queryDDB(name):
-    return table.get_item(Key={'Name': name})
+    #try:
+    item = tableDB.get_item(Key={'Name': name})
+    #except boto.dynamodb.exceptions.DynamoDBKeyNotFoundError:
+    #item = None
+    return item
 
 
 EMAIL_REGEX = re.compile(r"[^@\s]+@[^@\s]+\.[^@\s.]+$")
@@ -117,7 +118,7 @@ def validateInput(email, gpa, year):
 	try:
 		if not EMAIL_REGEX.match(email):
 			return "Input email is not valid. Please check for typos."
-		elif not GPA_REGEX.match(gpa) or float(gpa) > 4.0:
+		elif not GPA_REGEX.match(gpa) or float(gpa) > 4.0 or float(gpa) < 0.0:
 			return "Input GPA is not valid. Must be in format D.DD, where 'D' is a digit. Must be on 4.0 scale."
 			# TODO: currently just makes sure reasonable. Probably narrow by current date.
 		elif int(year) < 1950 or int(year) > 2050:
